@@ -5,11 +5,11 @@ pipeline {
     }
 
     parameters {
-         string(name: 'tomcat_stag', defaultValue: '35.154.81.229', description: 'Tomcat Staging Server')
+        string(name: 'tomcat_stag', defaultValue: '35.154.81.229', description: 'Tomcat Staging Server')
     }
 
-stages{
-        stage('Build'){
+    stages {
+        stage('Build') {
             steps {
                 sh 'mvn clean package'
             }
@@ -21,12 +21,10 @@ stages{
             }
         }
 
-        stage ('Deployments'){
-                stage ('Deploy to Staging Server'){
-                    steps {
-                        sh "scp **/*.war jenkins@${params.tomcat_stag}:/usr/share/tomcat/webapps"
-                    }
-                }
+        stage('Deploy to Staging Server') {
+            steps {
+                sh "scp target/*.war jenkins@${params.tomcat_stag}:/usr/share/tomcat/webapps"
             }
         }
     }
+}
